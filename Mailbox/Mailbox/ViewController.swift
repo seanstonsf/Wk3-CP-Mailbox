@@ -14,9 +14,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var feedImageView: UIImageView!
     @IBOutlet weak var messageRowContainer: UIView!
     @IBOutlet weak var messageImageView: UIImageView!
+    @IBOutlet weak var navImageView: UIImageView!
+    @IBOutlet weak var icon_menu: UIImageView!
+    @IBOutlet weak var icon_compose: UIImageView!
     @IBOutlet weak var SearchBar: UIImageView!
     @IBOutlet weak var helpBannerImageView: UIImageView!
-    @IBOutlet weak var menuButton: UIButton!
+    @IBOutlet weak var segmentedController: UISegmentedControl!
 
     @IBOutlet weak var leftSideIconView: UIView!
     @IBOutlet weak var rightSideIconView: UIView!
@@ -26,6 +29,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var messageArchiveIcon: UIImageView!
     @IBOutlet weak var rescheduleImageButton: UIButton!
     @IBOutlet weak var listImageButton: UIButton!
+    
+    @IBOutlet weak var doneScreen: UIImageView!
+    @IBOutlet weak var rescheduleScreen: UIImageView!
     
     
     var contentViewInitialCenter: CGPoint!
@@ -44,14 +50,21 @@ class ViewController: UIViewController {
     var drawerClosed: CGFloat!
     var drawerOpen: CGFloat!
     
+    var leftCenterPosition: CGFloat!
+    var centerCenterPosition: CGFloat!
+    var rightCenterPosition: CGFloat!
+
     
     var gray = UIColor(red:0.91, green:0.92, blue:0.92, alpha:1)
+    var blue = UIColor(red:0.3, green:0.73, blue:0.87, alpha:1)
     var red = UIColor(red:0.92, green:0.33, blue:0.2, alpha:1)
     var green = UIColor(red:0.45, green:0.85, blue:0.38, alpha:1)
     var yellow = UIColor(red:0.98, green:0.83, blue:0.2, alpha:1)
     var brown = UIColor(red:0.85, green:0.65, blue:0.45, alpha:1)
     
-
+    let panRec = UIPanGestureRecognizer()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         scrollView.contentSize = CGSize(width: 320, height: 1432)
@@ -60,7 +73,8 @@ class ViewController: UIViewController {
         messageImageInitialCenter = messageImageView.frame.origin
         leftSideIconInitialCenter = leftSideIconView.frame.origin
         rightSideIconInitialCenter = rightSideIconView.frame.origin
-        
+
+       
         stepOne = CGFloat(60)
         stepTwo = CGFloat(260)
         stepThree = CGFloat(-60)
@@ -68,14 +82,23 @@ class ViewController: UIViewController {
         messageImageViewOffScreen = CGFloat(500)
         messageIconRightOffScreen = CGFloat(340)
         messageIconLeftOffScreen = CGFloat(-30)
-        feedMoveInt = CGFloat(86)
+        feedMoveInt = CGFloat(144)
         drawerClosed = CGFloat(160)
         drawerOpen = CGFloat(445)
+        leftCenterPosition = CGFloat(-160)
+        centerCenterPosition = CGFloat(160)
+        rightCenterPosition = CGFloat(480)
         
-//        let edgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: "onEdgePan:")
-//        edgeGesture.edges = UIRectEdge.Left
-//        contentView.addGestureRecognizer(edgeGesture)
+        let edgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: "onEdgePan:")
+        edgeGesture.edges = UIRectEdge.Left
+        contentView.addGestureRecognizer(edgeGesture)
 
+        
+        rescheduleScreen.center.x = leftCenterPosition
+        scrollView.center.x = centerCenterPosition
+        doneScreen.center.x = rightCenterPosition
+
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -193,7 +216,7 @@ class ViewController: UIViewController {
             self.rescheduleImageButton.alpha = 0
             self.listImageButton.alpha = 0
             UIView.animateWithDuration(0.3, delay: 0.3, options: [], animations: { () -> Void in
-                self.feedImageView.frame.origin.y = self.feedImageView.frame.origin.y - self.feedMoveInt
+                self.feedImageView.frame.origin.y = self.feedMoveInt
                 }, completion: nil)
         }
     }
@@ -209,6 +232,8 @@ class ViewController: UIViewController {
     }
     @IBAction func ListImageButton(sender: AnyObject) {
         FeedAnimatePosition()
+
+
     }
     override func canBecomeFirstResponder() -> Bool {
         return true
@@ -224,33 +249,113 @@ class ViewController: UIViewController {
                 self.TransparentIcons()
                 UIView.animateWithDuration(0.3, animations: { () -> Void in
                     self.messageImageView.alpha = 1
-                    self.feedImageView.frame.origin.y = self.feedImageView.frame.origin.y + self.feedMoveInt
+                    self.feedImageView.frame.origin.y = self.feedImageView.frame.origin.y + CGFloat(86)
                 })
             }
         }
     }
 
-//    @IBAction func onEdgeGesture(sender: UIScreenEdgePanGestureRecognizer) {
-//        let translation = sender.translationInView(view)
-//        
-//        //        let contentViewLocation = contentView.center.x
-////        let location = sender.locationInView(view)
-////        let messageLocation = messageImageInitialCenter.x + translation.x
-//
-//        if sender.state == UIGestureRecognizerState.Began {
-//            NSLog("began")
-//            contentViewInitialCenter = contentView.center
-//            
-//        } else if sender.state == UIGestureRecognizerState.Changed {
-//            NSLog("changed")
-//            contentView.center = (CGPoint(x: contentViewInitialCenter.x + translation.x, y: contentViewInitialCenter.y))
-//        } else if sender.state == UIGestureRecognizerState.Ended {
-//            NSLog("ended")
-//
-//        }
+    func onEdgePan(edgeGesture: UIScreenEdgePanGestureRecognizer){
+        let edgeTranslation = edgeGesture.translationInView(view)
+        let edgeVelocity = edgeGesture.velocityInView(view)
+        
+        if edgeGesture.state == UIGestureRecognizerState.Began{
+//            NSLog("Edge Pan Began")
+            contentViewInitialCenter = contentView.center
 
-//    }
+        } else if edgeGesture.state == UIGestureRecognizerState.Changed{
+            
+            contentView.center = CGPoint(x: drawerClosed + edgeTranslation.x, y: contentViewInitialCenter.y)
+            
+        } else if edgeGesture.state == UIGestureRecognizerState.Ended{
+            if edgeVelocity.x > 0 {
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.contentView.center = CGPoint(x: self.drawerOpen, y: self.contentViewInitialCenter.y)
+                })
+                        panRec.addTarget(self, action: "draggedView:")
+                        contentView.addGestureRecognizer(panRec)
+                        contentView.userInteractionEnabled = true
+
+//                NSLog("Edge Pan Ended Open")
+            } else {
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.contentView.center = CGPoint(x: self.drawerClosed, y: self.contentViewInitialCenter.y)
+                })
+//            NSLog("Edge Pan Ended Closed")
+                
+            }
+            
+        }
+        
+    }
+    func draggedView(sender:UIPanGestureRecognizer){
+        let panTranslation = panRec.translationInView(view)
+        let panVelocity = panRec.velocityInView(view)
+//        let contentViewLocation = contentViewInitialCenter.x + panTranslation.x
+        //        NSLog("Pan in a Pan")
+        
+        if sender.state == UIGestureRecognizerState.Began {
+//            NSLog("Menu Pan Began \(contentViewLocation)")
+            contentViewInitialCenter = contentView.center
+            
+        } else if sender.state == UIGestureRecognizerState.Changed {
+            contentView.center = CGPoint(x: contentViewInitialCenter.x + panTranslation.x, y: contentViewInitialCenter.y)
+
+            
+//            NSLog("Menu Pan Changed \(contentViewLocation)")
+        } else if sender.state == UIGestureRecognizerState.Ended {
+            if panVelocity.x > 0 {
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.contentView.center.x = CGFloat(self.drawerOpen)
+                })
+            } else {
+                UIView.animateWithDuration(0.2, animations: { () -> Void in
+                    self.contentView.center.x = CGFloat(self.drawerClosed)
+                })
+//                NSLog("Menu Pan Ended \(contentViewLocation)")
+
+            }
+        }
+    }
+
     
+    @IBAction func onSegmentedControllerChange(sender: UISegmentedControl) {
+        icon_compose.image = icon_compose.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+        icon_menu.image = icon_menu.image!.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
+
+        if segmentedController.selectedSegmentIndex == 0{
+            rescheduleScreen.alpha = 1
+            segmentedController.tintColor = self.yellow
+            icon_menu.tintColor = self.yellow
+            icon_compose.tintColor = self.yellow
+            UIView.animateWithDuration(0.2, delay: 0.1, options: [], animations: { () -> Void in
+                self.rescheduleScreen.center.x = self.centerCenterPosition
+                self.scrollView.center.x = self.rightCenterPosition
+                self.doneScreen.center.x = self.rightCenterPosition
+                }, completion: nil)
+            
+        } else if segmentedController.selectedSegmentIndex == 2 {
+            doneScreen.alpha = 1
+            segmentedController.tintColor = self.green
+            icon_menu.tintColor = self.green
+            icon_compose.tintColor = self.green
+            UIView.animateWithDuration(0.2, delay: 0.1, options: [], animations: { () -> Void in
+                self.rescheduleScreen.center.x = self.leftCenterPosition
+                self.scrollView.center.x = self.leftCenterPosition
+                self.doneScreen.center.x = self.centerCenterPosition
+                }, completion: nil)
+            
+        } else {
+            segmentedController.tintColor = self.blue
+            icon_menu.tintColor = self.blue
+            icon_compose.tintColor = self.blue
+            UIView.animateWithDuration(0.2, delay: 0.1, options: [], animations: { () -> Void in
+                self.rescheduleScreen.center.x = self.leftCenterPosition
+                self.scrollView.center.x = self.centerCenterPosition
+                self.doneScreen.center.x = self.rightCenterPosition
+                }, completion: nil)
+        }
+    }
 }
 
 

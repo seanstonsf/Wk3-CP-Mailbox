@@ -86,10 +86,33 @@
                                         </subviews>
                                         <animations/>
                                     </scrollView>
-                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="nav" translatesAutoresizingMaskIntoConstraints="NO" id="nFN-KN-4qz">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="center" fixedFrame="YES" image="screen_reschedule" translatesAutoresizingMaskIntoConstraints="NO" id="uTW-I3-WsR" userLabel="rescheduleScreen">
+                                        <rect key="frame" x="320" y="0.0" width="320" height="568"/>
                                         <animations/>
                                     </imageView>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.0" contentMode="center" fixedFrame="YES" image="screen_done" translatesAutoresizingMaskIntoConstraints="NO" id="vCR-Qu-PwG" userLabel="doneScreen">
+                                        <rect key="frame" x="-320" y="0.0" width="320" height="568"/>
+                                        <animations/>
+                                    </imageView>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JB4-Jt-gai">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+                                        <subviews>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="nav_bar" translatesAutoresizingMaskIntoConstraints="NO" id="nFN-KN-4qz">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+                                                <animations/>
+                                            </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="icon_menu" translatesAutoresizingMaskIntoConstraints="NO" id="fK7-SB-CEY">
+                                                <rect key="frame" x="8" y="30" width="22" height="22"/>
+                                                <animations/>
+                                            </imageView>
+                                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" image="icon_compose" translatesAutoresizingMaskIntoConstraints="NO" id="oSI-qK-qwO">
+                                                <rect key="frame" x="290" y="30" width="22" height="22"/>
+                                                <animations/>
+                                            </imageView>
+                                        </subviews>
+                                        <animations/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    </view>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="1" translatesAutoresizingMaskIntoConstraints="NO" id="NMt-AG-zOR">
                                         <rect key="frame" x="66" y="27" width="187" height="29"/>
                                         <animations/>
@@ -98,7 +121,10 @@
                                             <segment title="" image="mail_nav_icon"/>
                                             <segment title="" image="archive_nav_icon"/>
                                         </segments>
-                                        <color key="tintColor" red="0.4392156862745098" green="0.77254901960784317" blue="0.87450980392156863" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="tintColor" red="0.43921568630000002" green="0.7725490196" blue="0.87450980389999999" alpha="1" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="onSegmentedControllerChange:" destination="BYZ-38-t0r" eventType="valueChanged" id="qf4-qt-evE"/>
+                                        </connections>
                                     </segmentedControl>
                                     <button opaque="NO" alpha="0.0" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GM8-5s-KHs" userLabel="ReschudleImageButton">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -121,20 +147,23 @@
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="8L7-5B-wo1" appends="YES" id="sDt-kj-SgG"/>
+                                </connections>
                             </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="pMr-7L-gKR" appends="YES" id="lS8-TN-9KC"/>
-                        </connections>
                     </view>
                     <connections>
                         <outlet property="SearchBar" destination="lxn-NL-c4m" id="RQr-Td-cnB"/>
                         <outlet property="contentView" destination="hsC-Uz-RI3" id="Pwz-cA-wGx"/>
+                        <outlet property="doneScreen" destination="vCR-Qu-PwG" id="ggm-tN-lhb"/>
                         <outlet property="feedImageView" destination="IT5-6N-Ij9" id="ZoL-ew-NaB"/>
                         <outlet property="helpBannerImageView" destination="115-BI-sDb" id="HXY-Ei-aaL"/>
+                        <outlet property="icon_compose" destination="oSI-qK-qwO" id="UMj-LP-dyg"/>
+                        <outlet property="icon_menu" destination="fK7-SB-CEY" id="RVf-0i-hgC"/>
                         <outlet property="leftSideIconView" destination="F2B-Hs-hhe" id="O5m-0p-icY"/>
                         <outlet property="listImageButton" destination="9U1-yg-Hmg" id="XIC-Mh-ufF"/>
                         <outlet property="messageArchiveIcon" destination="phT-t9-eN9" id="GDH-LO-gZV"/>
@@ -143,9 +172,12 @@
                         <outlet property="messageLaterIcon" destination="xOn-6g-ZxD" id="M9q-GG-w5c"/>
                         <outlet property="messageListIcon" destination="EHh-Xp-dmF" id="kH8-Iz-1fn"/>
                         <outlet property="messageRowContainer" destination="fg2-uF-kTj" id="3R3-Fp-NHA"/>
+                        <outlet property="navImageView" destination="nFN-KN-4qz" id="qsb-v4-OiR"/>
                         <outlet property="rescheduleImageButton" destination="GM8-5s-KHs" id="h14-y9-xHC"/>
+                        <outlet property="rescheduleScreen" destination="uTW-I3-WsR" id="62j-1d-uBN"/>
                         <outlet property="rightSideIconView" destination="lQe-wc-heI" id="gts-Gh-moL"/>
                         <outlet property="scrollView" destination="8Ni-BP-c2G" id="ET3-e9-yff"/>
+                        <outlet property="segmentedController" destination="NMt-AG-zOR" id="Cei-Ma-OQG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -154,12 +186,7 @@
                         <action selector="onRowPan:" destination="BYZ-38-t0r" id="2zv-IA-p76"/>
                     </connections>
                 </panGestureRecognizer>
-                <screenEdgePanGestureRecognizer minimumNumberOfTouches="1" id="pMr-7L-gKR">
-                    <rectEdge key="edges" left="YES"/>
-                    <connections>
-                        <action selector="onEdgeGesture:" destination="BYZ-38-t0r" id="1e2-K4-fnL"/>
-                    </connections>
-                </screenEdgePanGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="8L7-5B-wo1"/>
             </objects>
             <point key="canvasLocation" x="301" y="508"/>
         </scene>
@@ -170,14 +197,18 @@
         <image name="delete_icon" width="25" height="25"/>
         <image name="feed" width="320" height="1202"/>
         <image name="help_label" width="320" height="37"/>
+        <image name="icon_compose" width="22" height="22"/>
+        <image name="icon_menu" width="22" height="22"/>
         <image name="later_icon" width="25" height="25"/>
         <image name="list" width="320" height="568"/>
         <image name="list_icon" width="25" height="25"/>
         <image name="mail_nav_icon" width="25" height="20"/>
         <image name="menu" width="320" height="568"/>
         <image name="message" width="320" height="86"/>
-        <image name="nav" width="320" height="65"/>
+        <image name="nav_bar" width="320" height="65"/>
         <image name="reschedule" width="320" height="568"/>
+        <image name="screen_done" width="320" height="568"/>
+        <image name="screen_reschedule" width="320" height="568"/>
         <image name="search" width="320" height="42"/>
     </resources>
 </document>
