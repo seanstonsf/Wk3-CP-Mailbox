@@ -14,4 +14,9 @@ Optionals:
     • this isn't completely perfect, on first click on segment it justs the position. Didn't have a chance to debug yet.
     • I made some quick and dirty assets to make a custom navigation bar so that I could tint the icons and segment controls on click. 
     
+
+![Walkthrough](https://github.com/seanstonsf/Wk3-CP-Mailbox/blob/master/mailbox_gif_10-5-15_v2.gif?raw = true)
+    
+    
+    
     Thanks!
